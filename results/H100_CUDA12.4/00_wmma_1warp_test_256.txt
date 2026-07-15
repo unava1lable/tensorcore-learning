@@ -1,0 +1,7 @@
+root@e90890ef3cf2:/home/tc_test/build# ./bin/00_wmma_1warp_test 256 256 256
+kernel: 00_wmma_1warp
+[zeros] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
+[ones] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
+[identity_like] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
+[deterministic_random] max_abs_error=0.00000477 max_rel_error=0.01771144 normalized_error=4.37161173e-07 PASSED
+[signed_pattern] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED

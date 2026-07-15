@@ -1,0 +1,551 @@
+        .headerflags    @"EF_CUDA_TEXMODE_UNIFIED EF_CUDA_64BIT_ADDRESS EF_CUDA_SM90 EF_CUDA_VIRTUAL_SM(EF_CUDA_SM90)"
+        .elftype        @"ET_EXEC"
+
+
+//--------------------- .debug_frame              --------------------------
+        .section        .debug_frame,"",@progbits
+.debug_frame:
+        /*0000*/        .byte   0xff, 0xff, 0xff, 0xff, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff
+        /*0010*/        .byte   0xff, 0xff, 0xff, 0xff, 0x03, 0x00, 0x04, 0x7c, 0xff, 0xff, 0xff, 0xff, 0x0f, 0x0c, 0x81, 0x80
+        /*0020*/        .byte   0x80, 0x28, 0x00, 0x08, 0xff, 0x81, 0x80, 0x28, 0x08, 0x81, 0x80, 0x80, 0x28, 0x00, 0x00, 0x00
+        /*0030*/        .byte   0xff, 0xff, 0xff, 0xff, 0x2c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        /*0040*/        .byte   0x00, 0x00, 0x00, 0x00
+        /*0044*/        .dword  _ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii
+        /*004c*/        .byte   0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x24, 0x00, 0x00, 0x00, 0x0c, 0x81, 0x80
+        /*005c*/        .byte   0x80, 0x28, 0x00, 0x04, 0xa8, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+
+
+//--------------------- .nv.info                  --------------------------
+        .section        .nv.info,"",@"SHT_CUDA_INFO"
+        .align  4
+
+
+        //----- nvinfo : EIATTR_REGCOUNT
+        .align          4
+        /*0000*/        .byte   0x04, 0x2f
+        /*0002*/        .short  (.L_1 - .L_0)
+        .align          4
+.L_0:
+        /*0004*/        .word   index@(_ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii)
+        /*0008*/        .word   0x00000020
+
+
+        //----- nvinfo : EIATTR_MIN_STACK_SIZE
+        .align          4
+.L_1:
+        /*000c*/        .byte   0x04, 0x12
+        /*000e*/        .short  (.L_3 - .L_2)
+        .align          4
+.L_2:
+        /*0010*/        .word   index@(_ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii)
+        /*0014*/        .word   0x00000000
+
+
+        //----- nvinfo : EIATTR_FRAME_SIZE
+        .align          4
+.L_3:
+        /*0018*/        .byte   0x04, 0x11
+        /*001a*/        .short  (.L_5 - .L_4)
+        .align          4
+.L_4:
+        /*001c*/        .word   index@(_ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii)
+        /*0020*/        .word   0x00000000
+
+
+        //----- nvinfo : EIATTR_MIN_STACK_SIZE
+        .align          4
+.L_5:
+        /*0024*/        .byte   0x04, 0x12
+        /*0026*/        .short  (.L_7 - .L_6)
+        .align          4
+.L_6:
+        /*0028*/        .word   index@(_ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii)
+        /*002c*/        .word   0x00000000
+.L_7:
+
+
+//--------------------- .nv.info._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii --------------------------
+        .section        .nv.info._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii,"",@"SHT_CUDA_INFO"
+        .sectionflags   @""
+        .align  4
+
+
+        //----- nvinfo : EIATTR_CUDA_API_VERSION
+        .align          4
+        /*0000*/        .byte   0x04, 0x37
+        /*0002*/        .short  (.L_9 - .L_8)
+.L_8:
+        /*0004*/        .word   0x0000007c
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_9:
+        /*0008*/        .byte   0x04, 0x17
+        /*000a*/        .short  (.L_11 - .L_10)
+.L_10:
+        /*000c*/        .word   0x00000000
+        /*0010*/        .short  0x0008
+        /*0012*/        .short  0x002c
+        /*0014*/        .byte   0x00, 0xf0, 0x11, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_11:
+        /*0018*/        .byte   0x04, 0x17
+        /*001a*/        .short  (.L_13 - .L_12)
+.L_12:
+        /*001c*/        .word   0x00000000
+        /*0020*/        .short  0x0007
+        /*0022*/        .short  0x0028
+        /*0024*/        .byte   0x00, 0xf0, 0x11, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_13:
+        /*0028*/        .byte   0x04, 0x17
+        /*002a*/        .short  (.L_15 - .L_14)
+.L_14:
+        /*002c*/        .word   0x00000000
+        /*0030*/        .short  0x0006
+        /*0032*/        .short  0x0024
+        /*0034*/        .byte   0x00, 0xf0, 0x11, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_15:
+        /*0038*/        .byte   0x04, 0x17
+        /*003a*/        .short  (.L_17 - .L_16)
+.L_16:
+        /*003c*/        .word   0x00000000
+        /*0040*/        .short  0x0005
+        /*0042*/        .short  0x0020
+        /*0044*/        .byte   0x00, 0xf0, 0x11, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_17:
+        /*0048*/        .byte   0x04, 0x17
+        /*004a*/        .short  (.L_19 - .L_18)
+.L_18:
+        /*004c*/        .word   0x00000000
+        /*0050*/        .short  0x0004
+        /*0052*/        .short  0x001c
+        /*0054*/        .byte   0x00, 0xf0, 0x11, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_19:
+        /*0058*/        .byte   0x04, 0x17
+        /*005a*/        .short  (.L_21 - .L_20)
+.L_20:
+        /*005c*/        .word   0x00000000
+        /*0060*/        .short  0x0003
+        /*0062*/        .short  0x0018
+        /*0064*/        .byte   0x00, 0xf0, 0x11, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_21:
+        /*0068*/        .byte   0x04, 0x17
+        /*006a*/        .short  (.L_23 - .L_22)
+.L_22:
+        /*006c*/        .word   0x00000000
+        /*0070*/        .short  0x0002
+        /*0072*/        .short  0x0010
+        /*0074*/        .byte   0x00, 0xf0, 0x21, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_23:
+        /*0078*/        .byte   0x04, 0x17
+        /*007a*/        .short  (.L_25 - .L_24)
+.L_24:
+        /*007c*/        .word   0x00000000
+        /*0080*/        .short  0x0001
+        /*0082*/        .short  0x0008
+        /*0084*/        .byte   0x00, 0xf0, 0x21, 0x00
+
+
+        //----- nvinfo : EIATTR_KPARAM_INFO
+        .align          4
+.L_25:
+        /*0088*/        .byte   0x04, 0x17
+        /*008a*/        .short  (.L_27 - .L_26)
+.L_26:
+        /*008c*/        .word   0x00000000
+        /*0090*/        .short  0x0000
+        /*0092*/        .short  0x0000
+        /*0094*/        .byte   0x00, 0xf0, 0x21, 0x00
+
+
+        //----- nvinfo : EIATTR_SPARSE_MMA_MASK
+        .align          4
+.L_27:
+        /*0098*/        .byte   0x03, 0x50
+        /*009a*/        .short  0x0000
+
+
+        //----- nvinfo : EIATTR_WMMA_USED
+        .align          4
+        /*009c*/        .byte   0x01, 0x2b
+        .zero           2
+
+
+        //----- nvinfo : EIATTR_MAXREG_COUNT
+        .align          4
+        /*00a0*/        .byte   0x03, 0x1b
+        /*00a2*/        .short  0x00ff
+
+
+        //----- nvinfo : EIATTR_EXIT_INSTR_OFFSETS
+        .align          4
+        /*00a4*/        .byte   0x04, 0x1c
+        /*00a6*/        .short  (.L_29 - .L_28)
+
+
+        //   ....[0]....
+.L_28:
+        /*00a8*/        .word   0x00000080
+
+
+        //   ....[1]....
+        /*00ac*/        .word   0x00000f30
+
+
+        //----- nvinfo : EIATTR_CBANK_PARAM_SIZE
+        .align          4
+.L_29:
+        /*00b0*/        .byte   0x03, 0x19
+        /*00b2*/        .short  0x0030
+
+
+        //----- nvinfo : EIATTR_PARAM_CBANK
+        .align          4
+        /*00b4*/        .byte   0x04, 0x0a
+        /*00b6*/        .short  (.L_31 - .L_30)
+        .align          4
+.L_30:
+        /*00b8*/        .word   index@(.nv.constant0._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii)
+        /*00bc*/        .short  0x0210
+        /*00be*/        .short  0x0030
+
+
+        //----- nvinfo : EIATTR_SW_WAR
+        .align          4
+.L_31:
+        /*00c0*/        .byte   0x04, 0x36
+        /*00c2*/        .short  (.L_33 - .L_32)
+.L_32:
+        /*00c4*/        .word   0x00000008
+.L_33:
+
+
+//--------------------- .nv.callgraph             --------------------------
+        .section        .nv.callgraph,"",@"SHT_CUDA_CALLGRAPH"
+        .align  4
+        .sectionentsize 8
+        .align          4
+        /*0000*/        .word   0x00000000
+        .align          4
+        /*0004*/        .word   0xffffffff
+        .align          4
+        /*0008*/        .word   0x00000000
+        .align          4
+        /*000c*/        .word   0xfffffffe
+        .align          4
+        /*0010*/        .word   0x00000000
+        .align          4
+        /*0014*/        .word   0xfffffffd
+        .align          4
+        /*0018*/        .word   0x00000000
+        .align          4
+        /*001c*/        .word   0xfffffffc
+
+
+//--------------------- .text._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii --------------------------
+        .section        .text._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii,"ax",@progbits
+        .align  128
+.text._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii:
+        .type           _ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii,@function
+        .size           _ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii,(.L_x_6 - _ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii)
+        .other          _ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii,@"STO_CUDA_ENTRY STV_DEFAULT"
+_ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii:
+        /*0000*/                   LDC R1, c[0x0][0x28] ;
+        /*0010*/                   S2UR UR5, SR_CTAID.X ;
+        /*0020*/                   S2UR UR6, SR_CTAID.Y ;
+        /*0030*/                   LDC.64 R2, c[0x0][0x228] ;
+        /*0040*/                   USHF.L.U32 UR5, UR5, 0x4, URZ ;
+        /*0050*/                   USHF.L.U32 UR6, UR6, 0x4, URZ ;
+        /*0060*/                   ISETP.LE.AND P0, PT, R3, UR5, PT ;
+        /*0070*/                   ISETP.LE.OR P0, PT, R2, UR6, P0 ;
+        /*0080*/               @P0 EXIT ;
+        /*0090*/                   ULDC UR4, c[0x0][0x230] ;
+        /*00a0*/                   ULDC.64 UR12, c[0x0][0x208] ;
+        /*00b0*/                   ISETP.LT.AND P0, PT, RZ, UR4, PT ;
+        /*00c0*/               @P0 BRA `(.L_x_0) ;
+        /*00d0*/                   CS2R R10, SRZ ;
+        /*00e0*/                   CS2R R8, SRZ ;
+        /*00f0*/                   CS2R R6, SRZ ;
+        /*0100*/                   CS2R R4, SRZ ;
+        /*0110*/                   BRA `(.L_x_1) ;
+.L_x_0:
+        /*0120*/                   UIADD3 UR4, UR4, -0x1, URZ ;
+        /*0130*/                   CS2R R10, SRZ ;
+        /*0140*/                   ULDC UR19, c[0x0][0x234] ;
+        /*0150*/                   USHF.R.S32.HI UR17, URZ, 0x1f, UR5 ;
+        /*0160*/                   CS2R R8, SRZ ;
+        /*0170*/                   UISETP.GE.U32.AND UP0, UPT, UR4, 0x30, UPT ;
+        /*0180*/                   CS2R R6, SRZ ;
+        /*0190*/                   ULEA.HI UR8, UR4, 0x1, URZ, 0x1c ;
+        /*01a0*/                   CS2R R4, SRZ ;
+        /*01b0*/                   UIMAD UR7, UR6, UR19, URZ ;
+        /*01c0*/                   PLOP3.LUT P1, PT, PT, PT, UP0, 0x80, 0x0 ;
+        /*01d0*/                   ULOP3.LUT UR16, UR8, 0x3, URZ, 0xc0, !UPT ;
+        /*01e0*/                   UMOV UR4, URZ ;
+        /*01f0*/                   USHF.R.S32.HI UR10, URZ, 0x1f, UR7 ;
+        /*0200*/                   ISETP.NE.AND P0, PT, RZ, UR16, PT ;
+        /*0210*/              @!P1 BRA `(.L_x_2) ;
+        /*0220*/                   S2R R15, SR_LANEID ;
+        /*0230*/                   LDC R0, c[0x0][0x238] ;
+        /*0240*/                   USHF.R.U32.HI UR4, URZ, 0x1, UR19 ;
+        /*0250*/                   IMAD.MOV.U32 R3, RZ, RZ, RZ ;
+        /*0260*/                   UIADD3 UR8, UR8, -UR16, URZ ;
+        /*0270*/                   IMAD.MOV.U32 R11, RZ, RZ, RZ ;
+        /*0280*/                   ULDC.64 UR14, c[0x0][0x210] ;
+        /*0290*/                   SHF.R.U32.HI R14, RZ, 0x1, R0 ;
+        /*02a0*/                   IMAD.SHL.U32 R20, R0, 0x10, RZ ;
+        /*02b0*/                   LOP3.LUT R2, R15, 0x3, RZ, 0xc0, !PT ;
+        /*02c0*/                   SHF.R.U32.HI R15, RZ, 0x2, R15 ;
+        /*02d0*/                   IMAD.WIDE.U32 R12, R15, UR4, R2 ;
+        /*02e0*/                   UMOV UR4, URZ ;
+        /*02f0*/                   IMAD.WIDE.U32 R14, R15, R14, R2 ;
+        /*0300*/                   SHF.L.U64.HI R2, R12, 0x2, R13 ;
+        /*0310*/                   IMAD.SHL.U32 R3, R12, 0x4, RZ ;
+        /*0320*/                   SHF.L.U64.HI R16, R14.reuse, 0x2, R15 ;
+        /*0330*/                   IMAD.SHL.U32 R17, R14, 0x4, RZ ;
+.L_x_3:
+        /*0340*/                   LDC.64 R24, c[0x0][0x218] ;
+        /*0350*/                   IMAD R12, R0, UR4, RZ ;
+        /*0360*/                   UIADD3 UR9, UP0, UR7, UR4, URZ ;
+        /*0370*/                   IADD3 R13, P1, R12, UR5, RZ ;
+        /*0380*/                   ULEA.HI.X.SX32 UR11, UR4, UR10, 0x1, UP0 ;
+        /*0390*/                   LEA.HI.X.SX32 R12, R12, UR17, 0x1, P1 ;
+        /*03a0*/                   LEA R24, P1, R13, R24, 0x1 ;
+        /*03b0*/                   LEA.HI.X R25, R13, R25, R12, 0x1, P1 ;
+        /*03c0*/                   IADD3 R14, P1, R17, R24, RZ ;
+        /*03d0*/                   IMAD.X R15, R16, 0x1, R25, P1 ;
+        /*03e0*/                   IMAD.WIDE.U32 R26, R0, 0x10, R14 ;
+        /*03f0*/                   LDG.E R22, desc[UR12][R14.64] ;
+        /*0400*/                   LDG.E R21, desc[UR12][R26.64] ;
+        /*0410*/                   ULEA UR18, UP0, UR9, UR14, 0x1 ;
+        /*0420*/                   IMAD.U32 R13, RZ, RZ, UR19 ;
+        /*0430*/                   LDG.E R18, desc[UR12][R14.64+0x10] ;
+        /*0440*/                   ULEA.HI.X UR9, UR9, UR15, UR11, 0x1, UP0 ;
+        /*0450*/                   IADD3 R28, P1, R3, UR18, RZ ;
+        /*0460*/                   LDG.E R19, desc[UR12][R26.64+0x10] ;
+        /*0470*/                   IADD3.X R29, R2, UR9, RZ, P1, !PT ;
+        /*0480*/                   LDG.E R12, desc[UR12][R28.64] ;
+        /*0490*/                   IMAD.WIDE.U32 R26, R13, 0x10, R28 ;
+        /*04a0*/                   LDG.E R14, desc[UR12][R28.64+0x10] ;
+        /*04b0*/                   LDG.E R13, desc[UR12][R26.64] ;
+        /*04c0*/                   LDG.E R15, desc[UR12][R26.64+0x10] ;
+        /*04d0*/                   IMAD.WIDE R24, R20, 0x2, R24 ;
+        /*04e0*/                   UIADD3 UR9, UR4, 0x10, URZ ;
+        /*04f0*/                   UIADD3 UR11, UP0, UR7, UR9, URZ ;
+        /*0500*/                   ULEA.HI.X.SX32 UR9, UR9, UR10, 0x1, UP0 ;
+        /*0510*/                   ULEA UR18, UP0, UR11, UR14, 0x1 ;
+        /*0520*/                   ULEA.HI.X UR9, UR11, UR15, UR9, 0x1, UP0 ;
+        /*0530*/                   MOVM.16.MT88 R22, R22 ;
+        /*0540*/                   MOVM.16.MT88 R23, R21 ;
+        /*0550*/                   MOVM.16.MT88 R18, R18 ;
+        /*0560*/                   MOVM.16.MT88 R19, R19 ;
+        /*0570*/                   HMMA.16816.F32 R4, R12, R22, R4 ;
+        /*0580*/                   IADD3 R22, P1, R24, R17, RZ ;
+        /*0590*/                   IMAD.X R23, R25, 0x1, R16, P1 ;
+        /*05a0*/                   IMAD.WIDE.U32 R28, R0, 0x10, R22 ;
+        /*05b0*/                   HMMA.16816.F32 R8, R12, R18, R8 ;
+        /*05c0*/                   LDG.E R18, desc[UR12][R22.64] ;
+        /*05d0*/                   LDG.E R21, desc[UR12][R28.64] ;
+        /*05e0*/                   IADD3 R14, P1, R3, UR18, RZ ;
+        /*05f0*/                   LDG.E R26, desc[UR12][R22.64+0x10] ;
+        /*0600*/                   LDG.E R19, desc[UR12][R28.64+0x10] ;
+        /*0610*/                   IADD3.X R15, R2, UR9, RZ, P1, !PT ;
+        /*0620*/                   IMAD.U32 R13, RZ, RZ, UR19 ;
+        /*0630*/                   LDG.E R12, desc[UR12][R14.64] ;
+        /*0640*/                   IMAD.WIDE.U32 R28, R13, 0x10, R14 ;
+        /*0650*/                   LDG.E R13, desc[UR12][R28.64] ;
+        /*0660*/                   LDG.E R14, desc[UR12][R14.64+0x10] ;
+        /*0670*/                   LDG.E R15, desc[UR12][R28.64+0x10] ;
+        /*0680*/                   IMAD.WIDE R24, R20, 0x2, R24 ;
+        /*0690*/                   UIADD3 UR9, UR4, 0x20, URZ ;
+        /*06a0*/                   UIADD3 UR11, UP0, UR7, UR9, URZ ;
+        /*06b0*/                   ULEA.HI.X.SX32 UR9, UR9, UR10, 0x1, UP0 ;
+        /*06c0*/                   ULEA UR18, UP0, UR11, UR14, 0x1 ;
+        /*06d0*/                   ULEA.HI.X UR9, UR11, UR15, UR9, 0x1, UP0 ;
+        /*06e0*/                   MOVM.16.MT88 R22, R18 ;
+        /*06f0*/                   MOVM.16.MT88 R23, R21 ;
+        /*0700*/                   MOVM.16.MT88 R18, R26 ;
+        /*0710*/                   MOVM.16.MT88 R19, R19 ;
+        /*0720*/                   IADD3 R26, P1, R24, R17, RZ ;
+        /*0730*/                   IMAD.X R27, R25, 0x1, R16, P1 ;
+        /*0740*/                   IMAD.WIDE.U32 R28, R0, 0x10, R26 ;
+        /*0750*/                   LDG.E R21, desc[UR12][R26.64] ;
+        /*0760*/                   HMMA.16816.F32 R4, R12, R22, R4 ;
+        /*0770*/                   LDG.E R23, desc[UR12][R28.64] ;
+        /*0780*/                   HMMA.16816.F32 R8, R12, R18, R8 ;
+        /*0790*/                   LDG.E R18, desc[UR12][R26.64+0x10] ;
+        /*07a0*/                   LDG.E R19, desc[UR12][R28.64+0x10] ;
+        /*07b0*/                   IADD3 R14, P1, R3, UR18, RZ ;
+        /*07c0*/                   IMAD.U32 R13, RZ, RZ, UR19 ;
+        /*07d0*/                   IADD3.X R15, R2, UR9, RZ, P1, !PT ;
+        /*07e0*/                   IMAD.WIDE.U32 R26, R13, 0x10, R14 ;
+        /*07f0*/                   LDG.E R12, desc[UR12][R14.64] ;
+        /*0800*/                   LDG.E R13, desc[UR12][R26.64] ;
+        /*0810*/                   LDG.E R14, desc[UR12][R14.64+0x10] ;
+        /*0820*/                   LDG.E R15, desc[UR12][R26.64+0x10] ;
+        /*0830*/                   IMAD.WIDE R24, R20, 0x2, R24 ;
+        /*0840*/                   IADD3 R28, P1, R24, R17, RZ ;
+        /*0850*/                   UIADD3 UR9, UR4, 0x30, URZ ;
+        /*0860*/                   IMAD.X R29, R25, 0x1, R16, P1 ;
+        /*0870*/                   IMAD.WIDE.U32 R26, R0, 0x10, R28 ;
+        /*0880*/                   UIADD3 UR11, UP0, UR7, UR9, URZ ;
+        /*0890*/                   LDG.E R24, desc[UR12][R28.64+0x10] ;
+        /*08a0*/                   ULEA.HI.X.SX32 UR9, UR9, UR10, 0x1, UP0 ;
+        /*08b0*/                   ULEA UR18, UP0, UR11, UR14, 0x1 ;
+        /*08c0*/                   ULEA.HI.X UR9, UR11, UR15, UR9, 0x1, UP0 ;
+        /*08d0*/                   MOVM.16.MT88 R22, R21 ;
+        /*08e0*/                   LDG.E R21, desc[UR12][R26.64+0x10] ;
+        /*08f0*/                   MOVM.16.MT88 R23, R23 ;
+        /*0900*/                   MOVM.16.MT88 R18, R18 ;
+        /*0910*/                   MOVM.16.MT88 R19, R19 ;
+        /*0920*/                   HMMA.16816.F32 R4, R12, R22, R4 ;
+        /*0930*/                   LDG.E R22, desc[UR12][R28.64] ;
+        /*0940*/                   LDG.E R23, desc[UR12][R26.64] ;
+        /*0950*/                   HMMA.16816.F32 R8, R12, R18, R8 ;
+        /*0960*/                   IADD3 R26, P1, R3, UR18, RZ ;
+        /*0970*/                   IMAD.U32 R13, RZ, RZ, UR19 ;
+        /*0980*/                   IADD3.X R27, R2, UR9, RZ, P1, !PT ;
+        /*0990*/                   IMAD.WIDE.U32 R28, R13, 0x10, R26 ;
+        /*09a0*/                   LDG.E R12, desc[UR12][R26.64] ;
+        /*09b0*/                   LDG.E R14, desc[UR12][R26.64+0x10] ;
+        /*09c0*/                   LDG.E R13, desc[UR12][R28.64] ;
+        /*09d0*/                   LDG.E R15, desc[UR12][R28.64+0x10] ;
+        /*09e0*/                   MOVM.16.MT88 R18, R24 ;
+        /*09f0*/                   UIADD3 UR8, UR8, -0x4, URZ ;
+        /*0a00*/                   ISETP.NE.AND P1, PT, RZ, UR8, PT ;
+        /*0a10*/                   UIADD3 UR4, UR4, 0x40, URZ ;
+        /*0a20*/                   MOVM.16.MT88 R19, R21 ;
+        /*0a30*/                   MOVM.16.MT88 R22, R22 ;
+        /*0a40*/                   MOVM.16.MT88 R23, R23 ;
+        /*0a50*/                   HMMA.16816.F32 R4, R12, R22, R4 ;
+        /*0a60*/                   HMMA.16816.F32 R8, R12, R18, R8 ;
+        /*0a70*/                   NOP ;
+        /*0a80*/               @P1 BRA `(.L_x_3) ;
+.L_x_2:
+        /*0a90*/              @!P0 BRA `(.L_x_1) ;
+        /*0aa0*/                   S2R R0, SR_LANEID ;
+        /*0ab0*/                   ULDC UR18, c[0x0][0x238] ;
+        /*0ac0*/                   USHF.R.U32.HI UR8, URZ, 0x1, UR19 ;
+        /*0ad0*/                   IMAD.MOV.U32 R3, RZ, RZ, RZ ;
+        /*0ae0*/                   USHF.R.U32.HI UR11, URZ, 0x1, UR18 ;
+        /*0af0*/                   UIADD3 UR7, UP0, UR7, UR4, URZ ;
+        /*0b00*/                   ULDC.64 UR14, c[0x0][0x210] ;
+        /*0b10*/                   ULEA.HI.X.SX32 UR10, UR4, UR10, 0x1, UP0 ;
+        /*0b20*/                   ULEA UR9, UP0, UR7, UR14, 0x1 ;
+        /*0b30*/                   UIMAD UR4, UR4, UR18, URZ ;
+        /*0b40*/                   ULEA.HI.X UR10, UR7, UR15, UR10, 0x1, UP0 ;
+        /*0b50*/                   ULDC.64 UR14, c[0x0][0x218] ;
+        /*0b60*/                   LOP3.LUT R2, R0, 0x3, RZ, 0xc0, !PT ;
+        /*0b70*/                   SHF.R.U32.HI R13, RZ, 0x2, R0 ;
+        /*0b80*/                   IMAD.WIDE.U32 R24, R13, UR8, R2 ;
+        /*0b90*/                   IMAD.WIDE.U32 R2, R13, UR11, R2 ;
+        /*0ba0*/                   SHF.L.U64.HI R26, R24, 0x2, R25 ;
+        /*0bb0*/                   SHF.L.U64.HI R27, R2, 0x2, R3 ;
+.L_x_4:
+        /*0bc0*/                   UIADD3 UR7, UP0, UR5, UR4, URZ ;
+        /*0bd0*/                   IMAD.U32 R17, RZ, RZ, UR18 ;
+        /*0be0*/                   ULEA.HI.X.SX32 UR8, UR4, UR17, 0x1, UP0 ;
+        /*0bf0*/                   ULEA UR11, UP0, UR7, UR14, 0x1 ;
+        /*0c00*/                   ULEA.HI.X UR7, UR7, UR15, UR8, 0x1, UP0 ;
+        /*0c10*/                   LEA R28, P0, R2, UR11, 0x2 ;
+        /*0c20*/                   IADD3.X R29, R27, UR7, RZ, P0, !PT ;
+        /*0c30*/                   IMAD.WIDE.U32 R16, R17, 0x10, R28 ;
+        /*0c40*/                   LDG.E R0, desc[UR12][R28.64] ;
+        /*0c50*/                   LDG.E R22, desc[UR12][R28.64+0x10] ;
+        /*0c60*/                   LDG.E R21, desc[UR12][R16.64] ;
+        /*0c70*/                   LDG.E R23, desc[UR12][R16.64+0x10] ;
+        /*0c80*/                   LEA R18, P0, R24, UR9, 0x2 ;
+        /*0c90*/                   IMAD.U32 R13, RZ, RZ, UR19 ;
+        /*0ca0*/                   IADD3.X R19, R26, UR10, RZ, P0, !PT ;
+        /*0cb0*/                   IMAD.WIDE.U32 R16, R13, 0x10, R18 ;
+        /*0cc0*/                   LDG.E R12, desc[UR12][R18.64] ;
+        /*0cd0*/                   LDG.E R14, desc[UR12][R18.64+0x10] ;
+        /*0ce0*/                   LDG.E R13, desc[UR12][R16.64] ;
+        /*0cf0*/                   LDG.E R15, desc[UR12][R16.64+0x10] ;
+        /*0d00*/                   UIADD3 UR16, UR16, -0x1, URZ ;
+        /*0d10*/                   UIADD3 UR9, UP0, UR9, 0x20, URZ ;
+        /*0d20*/                   ULEA UR4, UR18, UR4, 0x4 ;
+        /*0d30*/                   ISETP.NE.AND P0, PT, RZ, UR16, PT ;
+        /*0d40*/                   UIADD3.X UR10, URZ, UR10, URZ, UP0, !UPT ;
+        /*0d50*/                   MOVM.16.MT88 R20, R0 ;
+        /*0d60*/                   MOVM.16.MT88 R22, R22 ;
+        /*0d70*/                   MOVM.16.MT88 R21, R21 ;
+        /*0d80*/                   MOVM.16.MT88 R23, R23 ;
+        /*0d90*/                   HMMA.16816.F32 R4, R12, R20, R4 ;
+        /*0da0*/                   HMMA.16816.F32 R8, R12, R22, R8 ;
+        /*0db0*/                   NOP ;
+        /*0dc0*/               @P0 BRA `(.L_x_4) ;
+.L_x_1:
+        /*0dd0*/                   S2R R0, SR_LANEID ;
+        /*0de0*/                   ULDC UR4, c[0x0][0x23c] ;
+        /*0df0*/                   IMAD.MOV.U32 R3, RZ, RZ, RZ ;
+        /*0e00*/                   UIMAD UR6, UR6, UR4, URZ ;
+        /*0e10*/                   USHF.R.U32.HI UR4, URZ, 0x1, UR4 ;
+        /*0e20*/                   USHF.R.S32.HI UR7, URZ, 0x1f, UR6 ;
+        /*0e30*/                   UIADD3 UR6, UP0, UR5, UR6, URZ ;
+        /*0e40*/                   ULDC.64 UR8, c[0x0][0x220] ;
+        /*0e50*/                   ULEA.HI.X.SX32 UR7, UR5, UR7, 0x1, UP0 ;
+        /*0e60*/                   ULEA UR5, UP0, UR6, UR8, 0x2 ;
+        /*0e70*/                   ULEA.HI.X UR6, UR6, UR9, UR7, 0x2, UP0 ;
+        /*0e80*/                   LOP3.LUT R2, R0, 0x3, RZ, 0xc0, !PT ;
+        /*0e90*/                   SHF.R.U32.HI R13, RZ, 0x2, R0 ;
+        /*0ea0*/                   IMAD.WIDE.U32 R2, R13, UR4, R2 ;
+        /*0eb0*/                   LEA R12, P0, R2, UR5, 0x3 ;
+        /*0ec0*/                   LEA.HI.X R13, R2, UR6, R3, 0x3, P0 ;
+        /*0ed0*/                   IMAD.U32 R3, RZ, RZ, UR4 ;
+        /*0ee0*/                   IMAD.WIDE.U32 R2, R3, 0x40, R12 ;
+        /*0ef0*/                   STG.E.64 desc[UR12][R12.64], R4 ;
+        /*0f00*/                   STG.E.64 desc[UR12][R2.64], R6 ;
+        /*0f10*/                   STG.E.64 desc[UR12][R12.64+0x20], R8 ;
+        /*0f20*/                   STG.E.64 desc[UR12][R2.64+0x20], R10 ;
+        /*0f30*/                   EXIT ;
+.L_x_5:
+        /*0f40*/                   BRA `(.L_x_5);
+        /*0f50*/                   NOP;
+        /*0f60*/                   NOP;
+        /*0f70*/                   NOP;
+        /*0f80*/                   NOP;
+        /*0f90*/                   NOP;
+        /*0fa0*/                   NOP;
+        /*0fb0*/                   NOP;
+        /*0fc0*/                   NOP;
+        /*0fd0*/                   NOP;
+        /*0fe0*/                   NOP;
+        /*0ff0*/                   NOP;
+.L_x_6:
+
+
+//--------------------- .nv.constant0._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii --------------------------
+        .section        .nv.constant0._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii,"a",@progbits
+        .sectionflags   @""
+        .align  4
+.nv.constant0._ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii:
+        .zero           576

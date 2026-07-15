@@ -1,0 +1,5 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii' for 'sm_90'
+ptxas info    : Function properties for _ZN49_GLOBAL__N__9ad9fa46_16_00_wmma_1warp_cu_14975c2415tensorcore_gemmILi16ELi16ELi16EEEvPK6__halfS3_Pfiiiiii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers

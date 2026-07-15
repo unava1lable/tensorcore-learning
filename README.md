@@ -41,7 +41,7 @@ WMMA single-warp GEMM
 - 可运行 kernel；
 - deterministic correctness tests；
 - 统一 benchmark；
-- cuBLASLt baseline；
+- cuBLAS/cuBLASLt baseline；
 - PTX/SASS 证据；
 - Nsight Compute 分析；
 - 设计假设、失败实验和结论笔记。
@@ -57,13 +57,13 @@ GPU 按需租用，不把 Hopper 作为前置条件。
 | A800 | `sm_80` | Stage 0–7 的 Ampere 主线、Stage 9A、数据中心性能基线 | Hopper WGMMA/TMA |
 | H800/H100 | `sm_90a` | Stage 8、Stage 9B、Hopper 专项实验 | 非前置依赖，后期按需短租 |
 
-不同 GPU 的结果使用独立目录和独立 cuBLASLt baseline。原始 TFLOPS、occupancy 和 stall 数据只在同一设备、同一软件栈与相近运行状态下纵向比较。
+不同 GPU 的结果使用独立目录和独立 cuBLAS/cuBLASLt baseline。原始 TFLOPS、occupancy 和 stall 数据只在同一设备、同一软件栈与相近运行状态下纵向比较。
 
 ## 学习阶段
 
 | Stage | 主题 | 主要产物 |
 |---:|---|---|
-| 0 | 基线与实验基础设施 | correctness、benchmark、cuBLASLt、PTX/SASS、Nsight Compute |
+| 0 | 基线与实验基础设施 | correctness、benchmark、cuBLAS/cuBLASLt、PTX/SASS、Nsight Compute |
 | 1 | WMMA 解剖与多 warp CTA bridge | CTA tiling、SMEM 复用、P1 基线 |
 | 2 | `mma.sync` 指令级微内核 | lane/register fragment mapping |
 | 3 | `ldmatrix` 与 shared-memory layout | plain、padding、XOR swizzle 对照 |
@@ -91,7 +91,7 @@ tensorcore-learning/
 │   ├── correctness.cuh
 │   ├── benchmark_result.h
 │   ├── environment.h
-│   ├── kernels.h
+│   ├── kernels.cuh
 │   ├── mma.cuh
 │   ├── ldmatrix.cuh
 │   ├── cp_async.cuh
@@ -132,7 +132,7 @@ tensorcore-learning/
 1. **先正确，再流水化，再调参。** 同一次受控实验尽量只改变一个主要机制。
 2. **先预测，再测量。** 运行前计算 tile、bytes、instruction count、registers 和 SMEM；运行后用工具验证。
 3. **保留对照组。** 例如 plain/padded/swizzled、同步/2-stage/3-stage、direct/staged epilogue。
-4. **以同设备 cuBLASLt 为主要性能基线。** 自定义 kernel 与 baseline 必须具有相同 dtype、layout、output、alpha/beta 和计时范围。
+4. **以同设备 cuBLAS/cuBLASLt 为主要性能基线。** 自定义 kernel 与 baseline 必须具有相同 dtype、layout、output、alpha/beta 和计时范围。
 5. **不静默处理不支持的配置。** 未实现的 shape、tail、layout 或架构应明确返回 `unsupported`。
 6. **不同架构分别编译与调参。** 不把某台 GPU 的最佳 CTA tile、stage 数或 occupancy 结论直接迁移到另一台 GPU。
 
@@ -172,7 +172,7 @@ C: FP32 或明确指定的 FP16 output
 - 使用 CUDA events 测量 kernel 时间；
 - allocation、初始化、H2D/D2H 和 correctness copy-back 不进入 kernel latency；
 - 预热后运行多次，至少记录 median、min 和离散程度；
-- 记录 GPU、compute capability、driver、CUDA、cuBLASLt、Nsight Compute、时钟、功耗和温度；
+- 记录 GPU、compute capability、driver、CUDA、cuBLAS/cuBLASLt、Nsight Compute、时钟、功耗和温度；
 - 保存 registers/thread、SMEM/block、spill、PTX/SASS 与主要 profiler 指标。
 
 TFLOPS 定义：
@@ -193,21 +193,42 @@ TFLOPS = 2 × M × N × K / elapsed_seconds / 1e12
 ## 性能里程碑
 
 - **P1**：同一设备上，多 warp CTA kernel 明显超过单 warp WMMA baseline。
-- **P2**：A800 或 RTX 4090 上，`mma.sync + cp.async` 在选定 aligned shape 达到约 60%–75% 同设备 cuBLASLt，并能解释主要差距。
-- **P3**：获得 H800/H100 后，`WGMMA + TMA` 在至少三个选定 aligned shape 达到 80% 以上同设备 cuBLASLt。Hopper 不可用时该里程碑保持 deferred，不阻塞其他阶段。
+- **P2**：A800 或 RTX 4090 上，`mma.sync + cp.async` 在选定 aligned shape 达到约 60%–75% 同设备 cuBLAS/cuBLASLt，并能解释主要差距。
+- **P3**：获得 H800/H100 后，`WGMMA + TMA` 在至少三个选定 aligned shape 达到 80% 以上同设备 cuBLAS/cuBLASLt。Hopper 不可用时该里程碑保持 deferred，不阻塞其他阶段。
 
 这些数字是学习项目的验收线，不是对所有 shape、语义和设备的性能承诺。
 
 ## 当前工作：Stage 0
 
-- [ ] 保存当前实现为 `kernels/00_wmma_1warp.cu`；
-- [ ] 建立统一 correctness harness；
-- [ ] 建立统一 benchmark 与 cuBLASLt baseline；
-- [ ] 收集环境、`ptxas` 资源报告、PTX 和 SASS；
-- [ ] 对 `1024³` 与 `4096³` 建立首份结果；
-- [ ] 完成第一次 Nsight Compute 基线分析；
-- [ ] 编写 `notes/00_baseline.md`。
+- [x] 保存当前实现为 `kernels/00_wmma_1warp.cu`；
+- [x] 建立统一 correctness harness；
+- [x] 建立统一 benchmark 与 cuBLAS baseline；
+- [x] 收集环境、`ptxas` 资源报告、PTX 和 SASS；
+- [x] 对 `1024³` 与 `4096³` 建立首份结果；
+- [x] 完成第一次 Nsight Compute 基线分析；
+- [x] 编写 `notes/00_baseline.md`。
+
+Stage 0 的 H100/CUDA 12.4 结果保存在 `results/H100_CUDA12.4/`，总结见 `notes/00_baseline.md`。
 
 ## 构建状态
 
-Stage 0 代码尚未提交。构建、测试和 benchmark 命令会随首个可运行 kernel 一并加入。
+Stage 0 当前提供单 warp WMMA kernel、correctness app，以及包含 cuBLAS baseline 的 benchmark app：
+
+```powershell
+cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=80
+cmake --build build --config Release
+.\build\bin\Release\00_wmma_1warp_test.exe 256 256 256
+.\build\bin\Release\00_wmma_1warp_bench.exe 1024 1024 1024
+```
+
+Linux 上也可以直接用 `nvcc` 做快速验证：
+
+```bash
+nvcc -std=c++17 -arch=sm_80 -Iinclude -DTC_KERNEL_NAME=\"00_wmma_1warp\" -DTC_KERNEL_LAUNCH=launch_wmma_1warp kernels/00_wmma_1warp.cu apps/test_gemm.cu -o 00_wmma_1warp_test
+nvcc -std=c++17 -arch=sm_80 -Iinclude -DTC_KERNEL_NAME=\"00_wmma_1warp\" -DTC_KERNEL_LAUNCH=launch_wmma_1warp kernels/00_wmma_1warp.cu apps/bench_gemm.cu -lcublas -o 00_wmma_1warp_bench
+./00_wmma_1warp_test 256 256 256
+./00_wmma_1warp_bench 1024 1024 1024
+```
+
+常用架构覆盖：V100 使用 `70`，A800 使用 `80`，RTX 4090 使用 `89`，H100/H800 使用 `90`。如果使用单配置生成器，运行路径通常是 `./build/bin/00_wmma_1warp_test` 和 `./build/bin/00_wmma_1warp_bench`。WMMA 需要 `sm_70` 或更新架构，不能用默认的旧架构目标编译。如果已有 build 目录缓存了旧值，例如 `52`，请删除 build 目录或重新配置时显式传入 `-DCMAKE_CUDA_ARCHITECTURES=90`。
+

@@ -1,0 +1,98 @@
+[1667] 00_wmma_1warp_bench@127.0.0.1
+  void <unnamed>::tensorcore_gemm<(int)16, (int)16, (int)16>(const __half *, const __half *, float *, int, int, int, int, int, int) (64, 64, 1)x(32, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ------------- ------------
+    Metric Name               Metric Unit Metric Value
+    ----------------------- ------------- ------------
+    DRAM Frequency          cycle/nsecond         2.62
+    SM Frequency            cycle/nsecond         1.44
+    Elapsed Cycles                  cycle       146528
+    Memory Throughput                   %        93.05
+    DRAM Throughput                     %         1.24
+    Duration                      usecond       101.41
+    L1/TEX Cache Throughput             %        98.71
+    L2 Cache Throughput                 %        32.34
+    SM Active Cycles                cycle    137972.72
+    Compute (SM) Throughput             %        16.41
+    ----------------------- ------------- ------------
+
+    INF   The kernel is utilizing greater than 80.0% of the available compute or memory performance of the device. To
+          further improve performance, work will likely need to be shifted from the most utilized to another unit.
+          Start by analyzing L1 in the Memory Workload Analysis section.
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.44
+    Executed Ipc Elapsed  inst/cycle         0.41
+    Issue Slots Busy               %        10.94
+    Issued Ipc Active     inst/cycle         0.44
+    SM Busy                        %        10.94
+    -------------------- ----------- ------------
+
+    OPT   Est. Local Speedup: 95.68%
+          All compute pipelines are under-utilized. Either this kernel is very small or it doesn't issue enough warps
+          per scheduler. Check the Launch Statistics and Scheduler Statistics sections for further details.
+
+    Section: Memory Workload Analysis
+    --------------------------- ------------ ------------
+    Metric Name                  Metric Unit Metric Value
+    --------------------------- ------------ ------------
+    Memory Throughput           Gbyte/second        41.43
+    Mem Busy                               %        93.05
+    Max Bandwidth                          %        30.06
+    L1/TEX Hit Rate                        %        62.72
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                                0
+    L2 Hit Rate                            %        95.87
+    Mem Pipes Busy                         %        16.41
+    --------------------------- ------------ ------------
+
+    Section: Scheduler Statistics
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    One or More Eligible                   %        10.94
+    Issued Warp Per Scheduler                        0.11
+    No Eligible                            %        89.06
+    Active Warps Per Scheduler          warp         7.69
+    Eligible Warps Per Scheduler        warp         0.13
+    ---------------------------- ----------- ------------
+
+    OPT   Est. Local Speedup: 6.949%
+          Every scheduler is capable of issuing one instruction per cycle, but for this kernel each scheduler only
+          issues an instruction every 9.1 cycles. This might leave hardware resources underutilized and may lead to
+          less optimal performance. Out of the maximum of 16 warps per scheduler, this kernel allocates an average of
+          7.69 active warps per scheduler, but only an average of 0.13 warps were eligible per cycle. Eligible warps
+          are the subset of active warps that are ready to issue their next instruction. Every cycle with no eligible
+          warp results in no instruction being issued and the issue slot remains unused. To increase the number of
+          eligible warps, avoid possible load imbalances due to highly different execution durations per warp.
+          Reducing stalls indicated on the Warp State Statistics and Source Counters sections can help, too.
+
+    Section: Warp State Statistics
+    ---------------------------------------- ----------- ------------
+    Metric Name                              Metric Unit Metric Value
+    ---------------------------------------- ----------- ------------
+    Warp Cycles Per Issued Instruction             cycle        70.29
+    Warp Cycles Per Executed Instruction           cycle        70.38
+    Avg. Active Threads Per Warp                                   32
+    Avg. Not Predicated Off Threads Per Warp                    31.95
+    ---------------------------------------- ----------- ------------
+
+    WRN   The optional metric smsp__pcsamp_sample_count could not be found. Collecting it as an additional metric could
+          enable the rule to provide more guidance.
+    ----- --------------------------------------------------------------------------------------------------------------
+    OPT   Est. Speedup: 6.949%
+          On average, each warp of this kernel spends 65.9 cycles being stalled waiting for a scoreboard dependency on
+          a L1TEX (local, global, surface, texture) operation. Find the instruction producing the data being waited
+          upon to identify the culprit. To reduce the number of cycles waiting on L1TEX data accesses verify the
+          memory access patterns are optimal for the target architecture, attempt to increase cache hit rates by
+          increasing data locality (coalescing), or by changing the cache configuration. Consider moving frequently
+          used data to shared memory. This stall type represents about 93.8% of the total average of 70.3 cycles
+          between issuing two instructions.
+    ----- --------------------------------------------------------------------------------------------------------------
+    INF   Check the Warp Stall Sampling (All Samples) table for the top stall locations in your source based on
+          sampling data. The Kernel Profiling Guide
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-reference) provides more details
+          on each stall reason.
