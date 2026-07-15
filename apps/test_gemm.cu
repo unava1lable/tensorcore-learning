@@ -19,6 +19,9 @@
 namespace {
 
 constexpr int kCaseNameWidth = 28;
+constexpr size_t kPatternExtent = 32;
+constexpr float kPaddingSentinel = -12345.0f;
+
 int parse_positive_arg(char **argv, int argc, int index, int fallback) {
     if (index >= argc) {
         return fallback;
@@ -65,7 +68,8 @@ void fill_unique_a(std::vector<half> &A, const GemmShape &shape) {
     fill_constant(A, 0.0f);
     for (size_t m = 0; m < shape.M; ++m) {
         for (size_t k = 0; k < shape.K; ++k) {
-            const int value = static_cast<int>((m * shape.K + k) % 32);
+            const int value = static_cast<int>((m % kPatternExtent) * kPatternExtent +
+                                               (k % kPatternExtent));
             A[m * shape.lda + k] = __float2half(static_cast<float>(value));
         }
     }
@@ -75,7 +79,8 @@ void fill_unique_b(std::vector<half> &B, const GemmShape &shape) {
     fill_constant(B, 0.0f);
     for (size_t k = 0; k < shape.K; ++k) {
         for (size_t n = 0; n < shape.N; ++n) {
-            const int value = static_cast<int>((k * shape.N + n) % 32);
+            const int value = static_cast<int>((k % kPatternExtent) * kPatternExtent +
+                                               (n % kPatternExtent));
             B[k * shape.ldb + n] = __float2half(static_cast<float>(value));
         }
     }
@@ -98,8 +103,24 @@ void fill_signed_pattern(std::vector<half> &A, std::vector<half> &B, const GemmS
     }
 }
 
+bool padding_unchanged(const std::vector<float> &C, const GemmShape &shape, float sentinel) {
+    if (shape.ldc == shape.N) {
+        return true;
+    }
+
+    for (size_t m = 0; m < shape.M; ++m) {
+        for (size_t n = shape.N; n < shape.ldc; ++n) {
+            if (C[m * shape.ldc + n] != sentinel) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 bool run_case(const char *name, const GemmShape &shape, const std::vector<half> &A,
-              const std::vector<half> &B, float c_initial = 0.0f) {
+              const std::vector<half> &B, float c_initial = 0.0f, float abs_tol = 5.0e-1f,
+              float rel_tol = 5.0e-2f, bool check_padding = false) {
     const size_t a_bytes = A.size() * sizeof(half);
     const size_t b_bytes = B.size() * sizeof(half);
     const size_t c_elems = shape.M * shape.ldc;
@@ -125,13 +146,17 @@ bool run_case(const char *name, const GemmShape &shape, const std::vector<half> 
 
     tc::reference_gemm(A, B, reference, shape.M, shape.N, shape.K, shape.lda, shape.ldb,
                        shape.ldc);
-    const tc::ErrorStats stats = tc::compare_results(reference, C, 5.0e-1f, 5.0e-2f);
+    const tc::ErrorStats stats = tc::compare_results(reference, C, abs_tol, rel_tol);
+    const bool padding_ok = !check_padding || padding_unchanged(C, shape, c_initial);
+    const bool case_passed = stats.first_mismatch < 0 && padding_ok;
 
-    const bool case_passed = stats.first_mismatch < 0;
     std::printf("[%-*s] max_abs_error=%10.8f max_rel_error=%10.8f normalized_error=%14.8e %s",
                 kCaseNameWidth, name, stats.max_abs, stats.max_rel, stats.normalized,
                 case_passed ? "PASSED" : "FAILED");
-    if (!case_passed) {
+    if (check_padding) {
+        std::printf(" padding=%s", padding_ok ? "OK" : "FAILED");
+    }
+    if (stats.first_mismatch >= 0) {
         std::printf(" first_mismatch_index=%d reference=%.8f kernel=%.8f",
                     stats.first_mismatch, stats.reference_value, stats.kernel_value);
     }
@@ -141,7 +166,7 @@ bool run_case(const char *name, const GemmShape &shape, const std::vector<half> 
     CUDA_CHECK(cudaFree(d_B));
     CUDA_CHECK(cudaFree(d_C));
 
-    return stats.first_mismatch < 0;
+    return case_passed;
 }
 
 bool run_padded_mapping_cases() {
@@ -156,11 +181,13 @@ bool run_padded_mapping_cases() {
 
     fill_identity_a(A, padded_shape);
     fill_unique_b(B, padded_shape);
-    passed &= run_case("padded_identity_a_unique_b", padded_shape, A, B, -12345.0f);
+    passed &= run_case("padded_identity_a_unique_b", padded_shape, A, B, kPaddingSentinel, 0.0f,
+                       0.0f, true);
 
     fill_unique_a(A, padded_shape);
     fill_identity_b(B, padded_shape);
-    passed &= run_case("padded_unique_a_identity_b", padded_shape, A, B, -12345.0f);
+    passed &= run_case("padded_unique_a_identity_b", padded_shape, A, B, kPaddingSentinel, 0.0f,
+                       0.0f, true);
 
     return passed;
 }
@@ -209,11 +236,11 @@ int main(int argc, char **argv) {
 
     fill_identity_a(A, shape);
     fill_unique_b(B, shape);
-    passed &= run_case("identity_a_unique_b", shape, A, B);
+    passed &= run_case("identity_a_unique_b", shape, A, B, 0.0f, 0.0f, 0.0f);
 
     fill_unique_a(A, shape);
     fill_identity_b(B, shape);
-    passed &= run_case("unique_a_identity_b", shape, A, B);
+    passed &= run_case("unique_a_identity_b", shape, A, B, 0.0f, 0.0f, 0.0f);
 
     passed &= run_padded_mapping_cases();
 

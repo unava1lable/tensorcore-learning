@@ -7,5 +7,5 @@ kernel: 00_wmma_1warp
 [signed_pattern              ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
 [identity_a_unique_b         ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
 [unique_a_identity_b         ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
-[padded_identity_a_unique_b  ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
-[padded_unique_a_identity_b  ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
+[padded_identity_a_unique_b  ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED padding=OK
+[padded_unique_a_identity_b  ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED padding=OK
