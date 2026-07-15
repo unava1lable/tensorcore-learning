@@ -102,7 +102,7 @@ tensorcore-learning/
 │   └── epilogue.cuh
 ├── kernels/
 │   ├── 00_wmma_1warp.cu
-│   ├── 01_wmma_cta_tiled.cu
+│   ├── 01_wmma_4warp_independent.cu
 │   ├── 02_mma_sync_micro.cu
 │   ├── 03_mma_sync_single_warp.cu
 │   ├── 04_mma_sync_cta.cu

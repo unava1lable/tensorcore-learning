@@ -1,4 +1,4 @@
-[2360] 01_wmma_cta_tiled_bench@127.0.0.1
+[2360] 01_wmma_4warp_independent_bench@127.0.0.1
   void <unnamed>::tensorcore_gemm<(int)16, (int)16, (int)16, (int)4>(const __half *, const __half *, float *, int, int, int, int, int, int) (256, 64, 1)x(32, 4, 1), Context 1, Stream 7, Device 0, CC 9.0
     Section: GPU Speed Of Light Throughput
     ----------------------- ------------- ------------

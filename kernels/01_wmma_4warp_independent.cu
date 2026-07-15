@@ -1,5 +1,5 @@
 #ifndef __CUDACC__
-#error "01_wmma_cta_tiled.cu must be compiled by nvcc or another CUDA compiler, not a host C++ compiler."
+#error "01_wmma_4warp_independent.cu must be compiled by nvcc or another CUDA compiler, not a host C++ compiler."
 #endif
 
 #include "kernels.cuh"
@@ -58,7 +58,7 @@ __global__ void tensorcore_gemm(const half *A, const half *B, float *C, int M, i
 
 } // namespace
 
-cudaError_t launch_wmma_cta_tiled(const half *A, const half *B, float *C,
+cudaError_t launch_wmma_4warp_independent(const half *A, const half *B, float *C,
                                   const GemmShape &shape, cudaStream_t stream) {
     if (A == nullptr || B == nullptr || C == nullptr) {
         return cudaErrorInvalidValue;

@@ -67,4 +67,4 @@ function(add_gemm_kernel_stage stage_name kernel_src launch_symbol)
 endfunction()
 
 add_gemm_kernel_stage(00_wmma_1warp kernels/00_wmma_1warp.cu launch_wmma_1warp)
-add_gemm_kernel_stage(01_wmma_cta_tiled kernels/01_wmma_cta_tiled.cu launch_wmma_cta_tiled)
+add_gemm_kernel_stage(01_wmma_4warp_independent kernels/01_wmma_4warp_independent.cu launch_wmma_4warp_independent)

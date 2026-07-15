@@ -2,7 +2,7 @@
 
 ## Scope
 
-`01_wmma_cta_tiled` is a controlled Stage 1A experiment:
+`01_wmma_4warp_independent` is a controlled Stage 1A experiment:
 
 - one CTA contains 4 warps;
 - each warp computes one independent 16x16 C tile;
@@ -18,7 +18,7 @@ The 1024 benchmark is almost unchanged from Stage 0. Nsight Compute for the 4096
 | Kernel | Shape | Active warps/scheduler | Eligible warps/scheduler | Issue rate | L1/TEX throughput | Compute throughput |
 |---|---:|---:|---:|---:|---:|---:|
 | 00_wmma_1warp | 4096x4096x4096 | 7.91 | 0.11 | 0.11 issued warp/scheduler | 99.79% | 17.26% |
-| 01_wmma_cta_tiled | 4096x4096x4096 | 14.96 | 0.13 | 0.11 issued warp/scheduler | 99.86% | 17.19% |
+| 01_wmma_4warp_independent | 4096x4096x4096 | 14.96 | 0.13 | 0.11 issued warp/scheduler | 99.86% | 17.19% |
 
 The active warp count rises close to the architectural maximum of 16 warps/scheduler, so the one-warp-per-block block-slot cap has been removed for this larger shape. However, eligible warps and issue rate do not improve.
 

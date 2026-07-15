@@ -19,7 +19,8 @@ struct GemmShape {
 cudaError_t launch_wmma_1warp(const half *A, const half *B, float *C,
                               const GemmShape &shape, cudaStream_t stream = nullptr);
 
-cudaError_t launch_wmma_cta_tiled(const half *A, const half *B, float *C,
-                                  const GemmShape &shape, cudaStream_t stream = nullptr);
+cudaError_t launch_wmma_4warp_independent(const half *A, const half *B, float *C,
+                                          const GemmShape &shape,
+                                          cudaStream_t stream = nullptr);
 
 #endif // KERNELS_CUH
