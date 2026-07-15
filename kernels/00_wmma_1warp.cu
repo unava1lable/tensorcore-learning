@@ -9,6 +9,7 @@
 #include <mma.h>
 
 #include <climits>
+#include <cstdint>
 
 namespace wmma = nvcuda::wmma;
 
@@ -17,6 +18,11 @@ namespace {
 constexpr int kWmmaM = 16;
 constexpr int kWmmaN = 16;
 constexpr int kWmmaK = 16;
+constexpr std::uintptr_t kWmmaAlignmentBytes = 32;
+
+bool is_aligned_32(const void *ptr) {
+    return reinterpret_cast<std::uintptr_t>(ptr) % kWmmaAlignmentBytes == 0;
+}
 
 // One warp computes one 16x16 C tile. Stage 0 intentionally keeps this kernel
 // minimal so later stages can isolate each tiling and memory-system change.
@@ -49,8 +55,17 @@ __global__ void tensorcore_gemm(const half *A, const half *B, float *C, int M, i
 
 cudaError_t launch_wmma_1warp(const half *A, const half *B, float *C, const GemmShape &shape,
                               cudaStream_t stream) {
+    if (A == nullptr || B == nullptr || C == nullptr) {
+        return cudaErrorInvalidValue;
+    }
+    if (!is_aligned_32(A) || !is_aligned_32(B) || !is_aligned_32(C)) {
+        return cudaErrorInvalidValue;
+    }
     if (shape.M == 0 || shape.N == 0 || shape.K == 0 || shape.lda < shape.K ||
         shape.ldb < shape.N || shape.ldc < shape.N) {
+        return cudaErrorInvalidValue;
+    }
+    if (shape.lda % 8 != 0 || shape.ldb % 8 != 0 || shape.ldc % 4 != 0) {
         return cudaErrorInvalidValue;
     }
     if (shape.M % kWmmaM != 0 || shape.N % kWmmaN != 0 || shape.K % kWmmaK != 0) {

@@ -28,6 +28,7 @@ option(TENSORCORE_ENABLE_PTXAS_INFO "Print ptxas register/shared-memory resource
 function(tensorcore_cuda_options target)
     target_compile_options(${target} PRIVATE
         $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>
+        $<$<COMPILE_LANGUAGE:CUDA>:-lineinfo>
         $<$<AND:$<COMPILE_LANGUAGE:CUDA>,$<BOOL:${TENSORCORE_ENABLE_PTXAS_INFO}>>:--ptxas-options=-v>
     )
 endfunction()

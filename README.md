@@ -55,7 +55,7 @@ GPU 按需租用，不把 Hopper 作为前置条件。
 | V100 | `sm_70` | Stage 0–1、WMMA、可选 Volta MMA 与跨代对照 | `ldmatrix`、`cp.async`、WGMMA/TMA |
 | RTX 4090 | `sm_89` | Stage 0–7、Stage 9A、可移植 fused GEMM | Hopper WGMMA/TMA |
 | A800 | `sm_80` | Stage 0–7 的 Ampere 主线、Stage 9A、数据中心性能基线 | Hopper WGMMA/TMA |
-| H800/H100 | `sm_90a` | Stage 8、Stage 9B、Hopper 专项实验 | 非前置依赖，后期按需短租 |
+| H800/H100 | `sm_90` / `sm_90a` | Stage 0–7 portable kernel 使用 `sm_90`；Stage 8/9B Hopper WGMMA/TMA 使用 `sm_90a` | 非前置依赖，后期按需短租 |
 
 不同 GPU 的结果使用独立目录和独立 cuBLAS/cuBLASLt baseline。原始 TFLOPS、occupancy 和 stall 数据只在同一设备、同一软件栈与相近运行状态下纵向比较。
 
@@ -215,20 +215,28 @@ Stage 0 的 H100/CUDA 12.4 结果保存在 `results/H100_CUDA12.4/`，总结见 
 Stage 0 当前提供单 warp WMMA kernel、correctness app，以及包含 cuBLAS baseline 的 benchmark app：
 
 ```powershell
-cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=80
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=80
 cmake --build build --config Release
 .\build\bin\Release\00_wmma_1warp_test.exe 256 256 256
 .\build\bin\Release\00_wmma_1warp_bench.exe 1024 1024 1024
 ```
 
-Linux 上也可以直接用 `nvcc` 做快速验证：
+Linux 上推荐显式指定 Release 和目标架构：
 
 ```bash
-nvcc -std=c++17 -arch=sm_80 -Iinclude -DTC_KERNEL_NAME=\"00_wmma_1warp\" -DTC_KERNEL_LAUNCH=launch_wmma_1warp kernels/00_wmma_1warp.cu apps/test_gemm.cu -o 00_wmma_1warp_test
-nvcc -std=c++17 -arch=sm_80 -Iinclude -DTC_KERNEL_NAME=\"00_wmma_1warp\" -DTC_KERNEL_LAUNCH=launch_wmma_1warp kernels/00_wmma_1warp.cu apps/bench_gemm.cu -lcublas -o 00_wmma_1warp_bench
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=90
+cmake --build build -j
+./build/bin/00_wmma_1warp_test 256 256 256
+./build/bin/00_wmma_1warp_bench 1024 1024 1024
+```
+
+也可以直接用 `nvcc` 做快速验证：
+
+```bash
+nvcc -O3 -std=c++17 -lineinfo -Xptxas=-v -arch=sm_80 -Iinclude -DTC_KERNEL_NAME=\"00_wmma_1warp\" -DTC_KERNEL_LAUNCH=launch_wmma_1warp kernels/00_wmma_1warp.cu apps/test_gemm.cu -o 00_wmma_1warp_test
+nvcc -O3 -std=c++17 -lineinfo -Xptxas=-v -arch=sm_80 -Iinclude -DTC_KERNEL_NAME=\"00_wmma_1warp\" -DTC_KERNEL_LAUNCH=launch_wmma_1warp kernels/00_wmma_1warp.cu apps/bench_gemm.cu -lcublas -o 00_wmma_1warp_bench
 ./00_wmma_1warp_test 256 256 256
 ./00_wmma_1warp_bench 1024 1024 1024
 ```
 
 常用架构覆盖：V100 使用 `70`，A800 使用 `80`，RTX 4090 使用 `89`，H100/H800 使用 `90`。如果使用单配置生成器，运行路径通常是 `./build/bin/00_wmma_1warp_test` 和 `./build/bin/00_wmma_1warp_bench`。WMMA 需要 `sm_70` 或更新架构，不能用默认的旧架构目标编译。如果已有 build 目录缓存了旧值，例如 `52`，请删除 build 目录或重新配置时显式传入 `-DCMAKE_CUDA_ARCHITECTURES=90`。
-

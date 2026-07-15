@@ -43,8 +43,12 @@ All test patterns passed:
 | identity_like | 0 | 0 | 0 |
 | deterministic_random | 0.00000477 | 0.01771144 | 4.37161173e-07 |
 | signed_pattern | 0 | 0 | 0 |
+| identity_a_unique_b | 0 | 0 | 0 |
+| unique_a_identity_b | 0 | 0 | 0 |
+| padded_identity_a_unique_b | 0 | 0 | 0 |
+| padded_unique_a_identity_b | 0 | 0 | 0 |
 
-The deterministic-random relative error is large only where the reference value is small. The normalized error is low enough for this FP16-input/FP32-accumulate baseline.
+The deterministic-random relative error is large only where the reference value is small. The normalized error is low enough for this FP16-input/FP32-accumulate baseline. The unique mapping cases check identity-by-unique products in both operand directions, and the padded cases use `lda=ldb=ldc=48` with a C-padding sentinel to catch row/stride overwrite bugs.
 
 ## Benchmark
 
@@ -57,8 +61,8 @@ Commands:
 
 | Shape | Kernel avg ms | Kernel avg TFLOPS | cuBLAS avg ms | cuBLAS avg TFLOPS | Kernel vs cuBLAS error |
 |---|---:|---:|---:|---:|---:|
-| 1024x1024x1024 | 0.0839 | 25.586 | 0.0156 | 137.223 | 0 |
-| 4096x4096x4096 | 4.8330 | 28.438 | 0.2031 | 676.836 | 0 |
+| 1024x1024x1024 | 0.0840 | 25.578 | 0.0160 | 134.258 | 0 |
+| 4096x4096x4096 | 4.8173 | 28.530 | 0.2032 | 676.533 | 0 |
 
 This establishes the expected low baseline: the single-warp WMMA kernel is correct but far below cuBLAS throughput.
 
@@ -101,6 +105,24 @@ Interpretation:
 - L1/TEX throughput is near saturated, and Nsight Compute reports long waits around L1TEX operations.
 - There are many active warps, but almost no eligible warps per scheduler. Issue slots are busy only about 11%.
 - Tensor Core compute is therefore poorly fed. The bottleneck is the direct global-memory fragment loading pattern and lack of data reuse, not the raw HMMA instruction itself.
+
+## Occupancy Limit
+
+There is also an independent occupancy limit from CTA granularity. Stage 0 launches one warp per block. On H100, the resident block-slot limit is reached before the architectural resident-warp limit, so the kernel tops out around 32 active warps per SM even though register and shared-memory usage are modest.
+
+Nsight Compute reports:
+
+| Shape | Active warps/scheduler | Schedulers/SM | Approx active warps/SM |
+|---|---:|---:|---:|
+| 1024x1024x1024 | 7.69 | 4 | 30.8 |
+| 4096x4096x4096 | 7.91 | 4 | 31.6 |
+
+So Stage 0 has two separate bottlenecks:
+
+- CTA granularity: one warp per block hits the block-slot cap and limits resident warps.
+- Operand supply: every warp repeatedly loads A/B fragments from global memory, creating heavy L1/TEX scoreboard pressure and poor issue efficiency.
+
+Stage 1 should separate these effects by first testing a multi-warp block without shared-memory reuse, then adding shared-memory staging and CTA-level A/B reuse.
 
 ## Conclusion
 

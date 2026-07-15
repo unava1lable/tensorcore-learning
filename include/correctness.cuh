@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <limits>
 #include <random>
+#include <stdexcept>
 #include <vector>
 
 namespace tc {
@@ -50,6 +52,10 @@ inline void reference_gemm(const std::vector<half> &A, const std::vector<half> &
 inline ErrorStats compare_results(const std::vector<float> &reference,
                                   const std::vector<float> &actual,
                                   float abs_tol, float rel_tol) {
+    if (reference.size() != actual.size()) {
+        throw std::invalid_argument("reference and actual sizes differ");
+    }
+
     ErrorStats stats;
     double sum_sq_error = 0.0;
     double sum_sq_ref = 0.0;
@@ -57,16 +63,29 @@ inline ErrorStats compare_results(const std::vector<float> &reference,
     for (size_t i = 0; i < reference.size(); ++i) {
         const float ref = reference[i];
         const float got = actual[i];
+
+        if (!std::isfinite(ref) || !std::isfinite(got)) {
+            const bool exact_nonfinite_match = (ref == got);
+            if (!exact_nonfinite_match) {
+                stats.max_abs = std::numeric_limits<float>::infinity();
+                stats.max_rel = std::numeric_limits<float>::infinity();
+                if (stats.first_mismatch < 0) {
+                    stats.first_mismatch = static_cast<int>(i);
+                    stats.reference_value = ref;
+                    stats.kernel_value = got;
+                }
+            }
+            continue;
+        }
+
         const float abs_error = std::fabs(ref - got);
         const float rel_error = abs_error / std::max(std::fabs(ref), 1.0e-6f);
+        const float allowed_error = abs_tol + rel_tol * std::fabs(ref);
 
-        if (abs_error > stats.max_abs) {
-            stats.max_abs = abs_error;
-        }
-        if (rel_error > stats.max_rel) {
-            stats.max_rel = rel_error;
-        }
-        if (stats.first_mismatch < 0 && abs_error > abs_tol && rel_error > rel_tol) {
+        stats.max_abs = std::max(stats.max_abs, abs_error);
+        stats.max_rel = std::max(stats.max_rel, rel_error);
+
+        if (stats.first_mismatch < 0 && abs_error > allowed_error) {
             stats.first_mismatch = static_cast<int>(i);
             stats.reference_value = ref;
             stats.kernel_value = got;
@@ -83,4 +102,3 @@ inline ErrorStats compare_results(const std::vector<float> &reference,
 } // namespace tc
 
 #endif // CORRECTNESS_CUH
-

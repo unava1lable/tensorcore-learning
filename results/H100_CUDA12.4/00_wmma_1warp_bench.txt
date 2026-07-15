@@ -1,22 +1,21 @@
-root@e90890ef3cf2:/home/tc_test/build# ./bin/00_wmma_1warp_bench 1024 1024 1024
+root@e90890ef3cf2:/home/tc_test# ./build/bin/00_wmma_1warp_bench 1024 1024 1024
 shape: M=1024 N=1024 K=1024
 warmup_iters: 5, bench_iters: 20
 00_wmma_1warp:
-  min_ms: 0.0831, median_ms: 0.0839, avg_ms: 0.0839
-  min_tflops: 25.831, median_tflops: 25.585, avg_tflops: 25.586
+  min_ms: 0.0832, median_ms: 0.0840, avg_ms: 0.0840
+  best_tflops: 25.821, median_tflops: 25.575, tflops_from_avg_ms: 25.578
 cublas_gemm_ex:
-  min_ms: 0.0152, median_ms: 0.0156, avg_ms: 0.0156
-  min_tflops: 140.985, median_tflops: 138.084, avg_tflops: 137.223
+  min_ms: 0.0150, median_ms: 0.0157, avg_ms: 0.0160
+  best_tflops: 143.395, median_tflops: 136.678, tflops_from_avg_ms: 134.258
 kernel_vs_cublas: max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00
 
-
-root@e90890ef3cf2:/home/tc_test/build# ./bin/00_wmma_1warp_bench 4096 4096 4096
+root@e90890ef3cf2:/home/tc_test# ./build/bin/00_wmma_1warp_bench 4096 4096 4096
 shape: M=4096 N=4096 K=4096
 warmup_iters: 5, bench_iters: 20
 00_wmma_1warp:
-  min_ms: 4.8022, median_ms: 4.8237, avg_ms: 4.8330
-  min_tflops: 28.620, median_tflops: 28.493, avg_tflops: 28.438
+  min_ms: 4.8026, median_ms: 4.8165, avg_ms: 4.8173
+  best_tflops: 28.618, median_tflops: 28.535, tflops_from_avg_ms: 28.530
 cublas_gemm_ex:
-  min_ms: 0.2010, median_ms: 0.2025, avg_ms: 0.2031
-  min_tflops: 683.912, median_tflops: 678.724, avg_tflops: 676.836
+  min_ms: 0.2012, median_ms: 0.2030, avg_ms: 0.2032
+  best_tflops: 683.259, median_tflops: 677.013, tflops_from_avg_ms: 676.533
 kernel_vs_cublas: max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00

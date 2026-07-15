@@ -60,7 +60,7 @@ void print_stats(const char *name, const BenchmarkStats &stats, int M, int N, in
     std::printf("%s:\n", name);
     std::printf("  min_ms: %.4f, median_ms: %.4f, avg_ms: %.4f\n", stats.min_ms,
                 stats.median_ms, stats.avg_ms);
-    std::printf("  min_tflops: %.3f, median_tflops: %.3f, avg_tflops: %.3f\n",
+    std::printf("  best_tflops: %.3f, median_tflops: %.3f, tflops_from_avg_ms: %.3f\n",
                 tflops_for(stats.min_ms, M, N, K), tflops_for(stats.median_ms, M, N, K),
                 tflops_for(stats.avg_ms, M, N, K));
 }
@@ -177,6 +177,7 @@ int main(int argc, char **argv) {
                           cudaMemcpyDeviceToHost));
     const tc::ErrorStats cublas_diff =
         tc::compare_results(h_C_cublas, h_C_custom, 5.0e-1f, 5.0e-2f);
+    const bool correct = cublas_diff.first_mismatch < 0;
 
     std::printf("shape: M=%d N=%d K=%d\n", M, N, K);
     std::printf("warmup_iters: %d, bench_iters: %d\n", warmup_iters, bench_iters);
@@ -184,7 +185,7 @@ int main(int argc, char **argv) {
     print_stats("cublas_gemm_ex", cublas_stats, M, N, K);
     std::printf("kernel_vs_cublas: max_abs_error=%.8f max_rel_error=%.8f normalized_error=%.8e\n",
                 cublas_diff.max_abs, cublas_diff.max_rel, cublas_diff.normalized);
-    if (cublas_diff.first_mismatch >= 0) {
+    if (!correct) {
         std::printf("kernel_vs_cublas first_mismatch_index=%d cublas=%.8f kernel=%.8f\n",
                     cublas_diff.first_mismatch, cublas_diff.reference_value,
                     cublas_diff.kernel_value);
@@ -196,8 +197,5 @@ int main(int argc, char **argv) {
     CUDA_CHECK(cudaFree(d_C_custom));
     CUDA_CHECK(cudaFree(d_C_cublas));
 
-    return EXIT_SUCCESS;
+    return correct ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-
-
-
