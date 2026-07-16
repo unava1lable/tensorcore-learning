@@ -169,6 +169,20 @@ bool run_case(const char *name, const GemmShape &shape, const std::vector<half> 
     return case_passed;
 }
 
+bool run_partial_cta_cases() {
+    const GemmShape partial_shape{48, 80, 32, 48, 96, 96};
+    const size_t a_elems = partial_shape.M * partial_shape.lda;
+    const size_t b_elems = partial_shape.K * partial_shape.ldb;
+
+    std::vector<half> A(a_elems);
+    std::vector<half> B(b_elems);
+
+    tc::fill_matrix(A, 2468);
+    tc::fill_matrix(B, 1357);
+    return run_case("partial_cta_48x80x32", partial_shape, A, B, kPaddingSentinel, 5.0e-1f,
+                    5.0e-2f, true);
+}
+
 bool run_padded_mapping_cases() {
     const GemmShape padded_shape{32, 32, 32, 48, 48, 48};
     const size_t a_elems = padded_shape.M * padded_shape.lda;
@@ -243,6 +257,7 @@ int main(int argc, char **argv) {
     passed &= run_case("unique_a_identity_b", shape, A, B, 0.0f, 0.0f, 0.0f);
 
     passed &= run_padded_mapping_cases();
+    passed &= run_partial_cta_cases();
 
     return passed ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -1,0 +1,193 @@
+==PROF== Disconnected from process 4275
+[4275] 01_wmma_block_tiled_bench@127.0.0.1
+  void <unnamed>::tensorcore_gemm<(int)16, (int)16, (int)16>(const __half *, const __half *, float *, int, int, int, int, int, int) (128, 128, 1)x(32, 4, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ------------- ------------
+    Metric Name               Metric Unit Metric Value
+    ----------------------- ------------- ------------
+    DRAM Frequency          cycle/nsecond         2.62
+    SM Frequency            cycle/nsecond         1.44
+    Elapsed Cycles                  cycle      8817572
+    Memory Throughput                   %        69.92
+    DRAM Throughput                     %         5.85
+    Duration                      msecond         6.12
+    L1/TEX Cache Throughput             %        70.50
+    L2 Cache Throughput                 %        23.77
+    SM Active Cycles                cycle   8740158.36
+    Compute (SM) Throughput             %        76.22
+    ----------------------- ------------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced.
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         3.07
+    Executed Ipc Elapsed  inst/cycle         3.05
+    Issue Slots Busy               %        76.86
+    Issued Ipc Active     inst/cycle         3.07
+    SM Busy                        %        76.86
+    -------------------- ----------- ------------
+
+    INF   ALU is the highest-utilized pipeline (59.0%) based on active cycles, taking into account the rates of its
+          different instructions. It executes integer and logic operations. It is well-utilized, but should not be a
+          bottleneck.
+
+    Section: Memory Workload Analysis
+    --------------------------- ------------ ------------
+    Metric Name                  Metric Unit Metric Value
+    --------------------------- ------------ ------------
+    Memory Throughput           Gbyte/second       196.11
+    Mem Busy                               %        69.92
+    Max Bandwidth                          %        28.89
+    L1/TEX Hit Rate                        %         8.86
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                                0
+    L2 Hit Rate                            %        75.12
+    Mem Pipes Busy                         %        54.87
+    --------------------------- ------------ ------------
+
+    Section: Scheduler Statistics
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    One or More Eligible                   %        76.85
+    Issued Warp Per Scheduler                        0.77
+    No Eligible                            %        23.15
+    Active Warps Per Scheduler          warp         9.78
+    Eligible Warps Per Scheduler        warp         2.31
+    ---------------------------- ----------- ------------
+
+    Section: Warp State Statistics
+    ---------------------------------------- ----------- ------------
+    Metric Name                              Metric Unit Metric Value
+    ---------------------------------------- ----------- ------------
+    Warp Cycles Per Issued Instruction             cycle        12.72
+    Warp Cycles Per Executed Instruction           cycle        12.72
+    Avg. Active Threads Per Warp                                   32
+    Avg. Not Predicated Off Threads Per Warp                    29.88
+    ---------------------------------------- ----------- ------------
+
+    WRN   The optional metric smsp__pcsamp_sample_count could not be found. Collecting it as an additional metric could
+          enable the rule to provide more guidance.
+
+    Section: Occupancy
+    ------------------------------- ----------- ------------
+    Metric Name                     Metric Unit Metric Value
+    ------------------------------- ----------- ------------
+    Max Active Clusters                 cluster            0
+    Max Cluster Size                      block            8
+    Overall GPU Occupancy                     %            0
+    Cluster Occupancy                         %            0
+    Block Limit SM                        block           32
+    Block Limit Registers                 block           10
+    Block Limit Shared Mem                block           21
+    Block Limit Warps                     block           16
+    Theoretical Active Warps per SM        warp           40
+    Theoretical Occupancy                     %        62.50
+    Achieved Occupancy                        %        60.97
+    Achieved Active Warps Per SM           warp        39.02
+    ------------------------------- ----------- ------------
+
+    OPT   Est. Local Speedup: 37.5%
+          The 10.00 theoretical warps per scheduler this kernel can issue according to its occupancy are below the
+          hardware maximum of 16. This kernel's theoretical occupancy (62.5%) is limited by the number of required
+          registers.
+
+  void <unnamed>::tensorcore_gemm<(int)16, (int)16, (int)16>(const __half *, const __half *, float *, int, int, int, int, int, int) (128, 128, 1)x(32, 4, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ------------- ------------
+    Metric Name               Metric Unit Metric Value
+    ----------------------- ------------- ------------
+    DRAM Frequency          cycle/nsecond         2.62
+    SM Frequency            cycle/nsecond         1.44
+    Elapsed Cycles                  cycle      8806705
+    Memory Throughput                   %        70.01
+    DRAM Throughput                     %         5.77
+    Duration                      msecond         6.11
+    L1/TEX Cache Throughput             %        70.58
+    L2 Cache Throughput                 %        23.95
+    SM Active Cycles                cycle   8729843.91
+    Compute (SM) Throughput             %        76.33
+    ----------------------- ------------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced.
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         3.08
+    Executed Ipc Elapsed  inst/cycle         3.05
+    Issue Slots Busy               %        76.95
+    Issued Ipc Active     inst/cycle         3.08
+    SM Busy                        %        76.95
+    -------------------- ----------- ------------
+
+    INF   ALU is the highest-utilized pipeline (59.1%) based on active cycles, taking into account the rates of its
+          different instructions. It executes integer and logic operations. It is well-utilized, but should not be a
+          bottleneck.
+
+    Section: Memory Workload Analysis
+    --------------------------- ------------ ------------
+    Metric Name                  Metric Unit Metric Value
+    --------------------------- ------------ ------------
+    Memory Throughput           Gbyte/second       193.58
+    Mem Busy                               %        70.01
+    Max Bandwidth                          %        28.93
+    L1/TEX Hit Rate                        %         9.85
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                                0
+    L2 Hit Rate                            %        75.40
+    Mem Pipes Busy                         %        54.95
+    --------------------------- ------------ ------------
+
+    Section: Scheduler Statistics
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    One or More Eligible                   %        76.59
+    Issued Warp Per Scheduler                        0.77
+    No Eligible                            %        23.41
+    Active Warps Per Scheduler          warp         9.74
+    Eligible Warps Per Scheduler        warp         2.30
+    ---------------------------- ----------- ------------
+
+    Section: Warp State Statistics
+    ---------------------------------------- ----------- ------------
+    Metric Name                              Metric Unit Metric Value
+    ---------------------------------------- ----------- ------------
+    Warp Cycles Per Issued Instruction             cycle        12.72
+    Warp Cycles Per Executed Instruction           cycle        12.72
+    Avg. Active Threads Per Warp                                   32
+    Avg. Not Predicated Off Threads Per Warp                    29.88
+    ---------------------------------------- ----------- ------------
+
+    WRN   The optional metric smsp__pcsamp_sample_count could not be found. Collecting it as an additional metric could
+          enable the rule to provide more guidance.
+
+    Section: Occupancy
+    ------------------------------- ----------- ------------
+    Metric Name                     Metric Unit Metric Value
+    ------------------------------- ----------- ------------
+    Max Active Clusters                 cluster            0
+    Max Cluster Size                      block            8
+    Overall GPU Occupancy                     %            0
+    Cluster Occupancy                         %            0
+    Block Limit SM                        block           32
+    Block Limit Registers                 block           10
+    Block Limit Shared Mem                block           21
+    Block Limit Warps                     block           16
+    Theoretical Active Warps per SM        warp           40
+    Theoretical Occupancy                     %        62.50
+    Achieved Occupancy                        %        61.03
+    Achieved Active Warps Per SM           warp        39.06
+    ------------------------------- ----------- ------------
+
+    OPT   Est. Local Speedup: 37.5%
+          The 10.00 theoretical warps per scheduler this kernel can issue according to its occupancy are below the
+          hardware maximum of 16. This kernel's theoretical occupancy (62.5%) is limited by the number of required
+          registers.

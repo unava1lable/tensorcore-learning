@@ -9,3 +9,4 @@ kernel: 01_wmma_block_tiled
 [unique_a_identity_b         ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED
 [padded_identity_a_unique_b  ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED padding=OK
 [padded_unique_a_identity_b  ] max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00 PASSED padding=OK
+[partial_cta_48x80x32        ] max_abs_error=0.00000036 max_rel_error=0.00017214 normalized_error=9.72808600e-12 PASSED padding=OK

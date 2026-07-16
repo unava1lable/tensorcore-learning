@@ -197,3 +197,82 @@ Stage 1B passes the intended acceptance criteria:
 - benchmark and Nsight Compute are compared against Stage 0, Stage 1A, and cuBLAS on H100/CUDA 12.4.
 
 The experiment validates the operand-supply hypothesis but not the performance-improvement hypothesis. Compared with Stage 1A, scheduler readiness and compute throughput improve sharply, but wall-clock time regresses because cooperative stores, shared-memory WMMA loads, and barriers add more cost than this simple 2-way reuse removes.
+
+## Follow-Up Review Items
+
+The follow-up review identified four useful hardening items:
+
+1. Add a partial-CTA correctness case such as `48x80x32`.
+2. Collect global/L2/DRAM byte or sector counters instead of relying only on throughput percentages.
+3. Include Occupancy and Compute Workload Analysis in the Nsight Compute evidence.
+4. Record barrier, short-scoreboard, and shared-memory bank-conflict evidence.
+
+The correctness harness now includes `partial_cta_48x80x32` with padded leading dimensions, and the H100 result passes with padding intact:
+
+```text
+M=48, N=80, K=32, lda=48, ldb=96, ldc=96
+```
+
+This shape is still WMMA-aligned, but it is not divisible by the Stage 1B `32x32` CTA tile. It exercises the last partial CTA in both M and N while also checking that C padding remains untouched.
+
+```text
+[partial_cta_48x80x32        ] max_abs_error=0.00000036 max_rel_error=0.00017214 normalized_error=9.72808600e-12 PASSED padding=OK
+```
+
+Suggested detailed Nsight Compute collection:
+
+```bash
+ncu \
+  --section SpeedOfLight \
+  --section ComputeWorkloadAnalysis \
+  --section MemoryWorkloadAnalysis \
+  --section Occupancy \
+  --section SchedulerStats \
+  --section WarpStateStats \
+  --target-processes all \
+  --kernel-name regex:tensorcore_gemm \
+  --export results/H100_CUDA12.4/ncu/01_wmma_block_tiled_4096_detailed \
+  --force-overwrite \
+  --page details \
+  ./build/bin/01_wmma_block_tiled_bench 4096 4096 4096 \
+  > results/H100_CUDA12.4/ncu/01_wmma_block_tiled_4096_detailed.txt
+```
+
+If the installed Nsight Compute build supports the raw metric names, collect explicit traffic and stall counters with:
+
+```bash
+ncu \
+  --metrics dram__bytes_read.sum,dram__bytes_write.sum,lts__t_bytes.sum,l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum,l1tex__t_sectors_pipe_lsu_mem_global_op_st.sum,l1tex__t_sectors_pipe_lsu_mem_shared_op_ld.sum,l1tex__t_sectors_pipe_lsu_mem_shared_op_st.sum,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,l1tex__data_bank_conflicts_pipe_lsu_mem_shared_op_ld.sum,l1tex__data_bank_conflicts_pipe_lsu_mem_shared_op_st.sum \
+  --target-processes all \
+  --kernel-name regex:tensorcore_gemm \
+  --page raw \
+  ./build/bin/01_wmma_block_tiled_bench 4096 4096 4096 \
+  > results/H100_CUDA12.4/ncu/01_wmma_block_tiled_4096_raw_metrics.txt
+```
+
+Metric names can vary by Nsight Compute version and architecture. If a metric is unavailable, use `ncu --query-metrics | grep <keyword>` inside the target container to find the local spelling, with keywords such as `dram__bytes`, `lts__t_bytes`, `shared`, `bank_conflict`, `barrier`, and `short_scoreboard`.
+## Detailed Nsight Compute Follow-Up
+
+The detailed Nsight Compute run adds `ComputeWorkloadAnalysis` and `Occupancy` evidence for the `4096x4096x4096` case:
+
+| Metric | Value |
+|---|---:|
+| Compute throughput | ~76.3% |
+| Memory throughput | ~70.0% |
+| DRAM throughput | ~5.8% |
+| L1/TEX throughput | ~70.5% |
+| L2 throughput | ~23.9% |
+| Issue slots busy | ~76.9% |
+| SM busy | ~76.9% |
+| Executed IPC active | ~3.07-3.08 inst/cycle |
+| One or more eligible | ~76.7% |
+| Issued warp per scheduler | ~0.77 |
+| Eligible warps per scheduler | ~2.30-2.31 |
+| Theoretical occupancy | 62.50% |
+| Achieved occupancy | ~61.0% |
+| Achieved active warps per SM | ~39.0 |
+| Occupancy limiter | registers, 10 blocks/SM |
+
+This confirms that the Stage 1B kernel is not simply idle on operand supply like Stage 1A. Scheduler eligibility and issue slots are much healthier, but the kernel pays significant instruction, shared-memory, and synchronization overhead. The occupancy report also shows that the kernel is register-limited rather than shared-memory-limited: `2048 bytes smem/block` permits more blocks than the 48-register footprint.
+
+Remaining evidence for the review is the raw counter run for explicit byte/sector and bank-conflict metrics. The detailed section reports throughput percentages, but not exact global/L2/DRAM byte counts or shared-memory bank-conflict counts.
