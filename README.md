@@ -4,7 +4,7 @@
 
 项目从最小的 `nvcuda::wmma` 单 warp GEMM 出发，逐步进入显式 `mma.sync`、`ldmatrix`、shared-memory layout、`cp.async` 多阶段流水线、CUTLASS/CuTe，以及后期 Hopper 的 WGMMA、TMA 与 warp specialization。最终目标是把这些能力迁移到 fused GEMM 和 LLM kernel。
 
-> 当前状态：**Stage 0 — 仓库初始化与基线基础设施**。代码、实验结果和笔记将按照学习阶段增量加入，不预先创建空占位文件。
+> 当前状态：**Stage 1B — WMMA block-tiled shared-memory reuse experiment**。Stage 0 已完成，Stage 1A 已建立 4-warp independent 对照，当前正在验证 4-warp CTA 级 SMEM 复用。
 
 ## 项目目标
 
@@ -210,9 +210,18 @@ TFLOPS = 2 × M × N × K / elapsed_seconds / 1e12
 
 Stage 0 的 H100/CUDA 12.4 结果保存在 `results/H100_CUDA12.4/`，总结见 `notes/00_baseline.md`。
 
+## 当前工作：Stage 1
+
+- [x] Stage 1A: `01_wmma_4warp_independent`，4 warps/block，但每个 warp 仍从 global 独立加载 operand；
+- [x] Stage 1B kernel scaffold: `01_wmma_block_tiled`，4 warps/block，2x2 warp arrangement，每 warp 一个 16x16 tile；
+- [x] Stage 1B validation: correctness、benchmark、PTX/SASS、ptxas、Nsight Compute 与 Stage 0/1A/cuBLAS 同设备对照；
+- [x] Stage 1B conclusion: shared-memory reuse 改善 operand supply，但 barrier/SMEM overhead 抵消 wall-clock 收益。
+
+Stage 1A 总结见 `notes/01_wmma_4warp_independent.md`，Stage 1B 结果见 `notes/01_wmma_block_tiled.md`。
+
 ## 构建状态
 
-Stage 0 当前提供单 warp WMMA kernel、correctness app，以及包含 cuBLAS baseline 的 benchmark app：
+当前构建会为每个已注册 kernel 生成独立的 correctness app 和包含 cuBLAS baseline 的 benchmark app。下面以 Stage 0 为例：
 
 ```powershell
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=80

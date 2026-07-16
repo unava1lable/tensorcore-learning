@@ -1,0 +1,21 @@
+root@e90890ef3cf2:/home/tc_test# ./build/bin/01_wmma_block_tiled_bench 1024 1024 1024
+shape: M=1024 N=1024 K=1024
+warmup_iters: 5, bench_iters: 20
+01_wmma_block_tiled:
+  min_ms: 0.1194, median_ms: 0.1204, avg_ms: 0.1207
+  best_tflops: 17.987, median_tflops: 17.843, tflops_from_avg_ms: 17.795
+cublas_gemm_ex:
+  min_ms: 0.0167, median_ms: 0.0177, avg_ms: 0.0182
+  best_tflops: 128.808, median_tflops: 121.135, tflops_from_avg_ms: 117.859
+kernel_vs_cublas: max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00
+
+root@e90890ef3cf2:/home/tc_test# ./build/bin/01_wmma_block_tiled_bench 4096 4096 4096
+shape: M=4096 N=4096 K=4096
+warmup_iters: 5, bench_iters: 20
+01_wmma_block_tiled:
+  min_ms: 5.8864, median_ms: 5.9065, avg_ms: 5.9415
+  best_tflops: 23.348, median_tflops: 23.269, tflops_from_avg_ms: 23.132
+cublas_gemm_ex:
+  min_ms: 0.2128, median_ms: 0.2156, avg_ms: 0.2158
+  best_tflops: 645.860, median_tflops: 637.330, tflops_from_avg_ms: 636.985
+kernel_vs_cublas: max_abs_error=0.00000000 max_rel_error=0.00000000 normalized_error=0.00000000e+00

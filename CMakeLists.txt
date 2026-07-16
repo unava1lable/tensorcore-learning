@@ -68,3 +68,4 @@ endfunction()
 
 add_gemm_kernel_stage(00_wmma_1warp kernels/00_wmma_1warp.cu launch_wmma_1warp)
 add_gemm_kernel_stage(01_wmma_4warp_independent kernels/01_wmma_4warp_independent.cu launch_wmma_4warp_independent)
+add_gemm_kernel_stage(01_wmma_block_tiled kernels/01_wmma_block_tiled.cu launch_wmma_block_tiled)

@@ -1,0 +1,116 @@
+[4028] 01_wmma_block_tiled_bench@127.0.0.1
+  void <unnamed>::tensorcore_gemm<(int)16, (int)16, (int)16>(const __half *, const __half *, float *, int, int, int, int, int, int) (128, 128, 1)x(32, 4, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ------------- ------------
+    Metric Name               Metric Unit Metric Value
+    ----------------------- ------------- ------------
+    DRAM Frequency          cycle/nsecond         2.62
+    SM Frequency            cycle/nsecond         1.44
+    Elapsed Cycles                  cycle      8790788
+    Memory Throughput                   %        70.11
+    DRAM Throughput                     %         5.64
+    Duration                      msecond         6.10
+    L1/TEX Cache Throughput             %        70.61
+    L2 Cache Throughput                 %        23.74
+    SM Active Cycles                cycle   8726453.99
+    Compute (SM) Throughput             %        76.43
+    ----------------------- ------------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced.
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.
+
+    Section: Memory Workload Analysis
+    --------------------------- ------------ ------------
+    Metric Name                  Metric Unit Metric Value
+    --------------------------- ------------ ------------
+    Memory Throughput           Gbyte/second       189.20
+    Mem Busy                               %        70.11
+    Max Bandwidth                          %        28.97
+    L1/TEX Hit Rate                        %         9.27
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                                0
+    L2 Hit Rate                            %        75.52
+    Mem Pipes Busy                         %        55.02
+    --------------------------- ------------ ------------
+
+    Section: Scheduler Statistics
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    One or More Eligible                   %        76.84
+    Issued Warp Per Scheduler                        0.77
+    No Eligible                            %        23.16
+    Active Warps Per Scheduler          warp         9.76
+    Eligible Warps Per Scheduler        warp         2.30
+    ---------------------------- ----------- ------------
+
+    Section: Warp State Statistics
+    ---------------------------------------- ----------- ------------
+    Metric Name                              Metric Unit Metric Value
+    ---------------------------------------- ----------- ------------
+    Warp Cycles Per Issued Instruction             cycle        12.70
+    Warp Cycles Per Executed Instruction           cycle        12.70
+    Avg. Active Threads Per Warp                                   32
+    Avg. Not Predicated Off Threads Per Warp                    29.88
+    ---------------------------------------- ----------- ------------
+
+    WRN   The optional metric smsp__pcsamp_sample_count could not be found. Collecting it as an additional metric could
+          enable the rule to provide more guidance.
+
+  void <unnamed>::tensorcore_gemm<(int)16, (int)16, (int)16>(const __half *, const __half *, float *, int, int, int, int, int, int) (128, 128, 1)x(32, 4, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ------------- ------------
+    Metric Name               Metric Unit Metric Value
+    ----------------------- ------------- ------------
+    DRAM Frequency          cycle/nsecond         2.62
+    SM Frequency            cycle/nsecond         1.44
+    Elapsed Cycles                  cycle      8800924
+    Memory Throughput                   %        70.05
+    DRAM Throughput                     %         5.77
+    Duration                      msecond         6.11
+    L1/TEX Cache Throughput             %        70.53
+    L2 Cache Throughput                 %        23.61
+    SM Active Cycles                cycle   8736123.45
+    Compute (SM) Throughput             %        76.37
+    ----------------------- ------------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced.
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.
+
+    Section: Memory Workload Analysis
+    --------------------------- ------------ ------------
+    Metric Name                  Metric Unit Metric Value
+    --------------------------- ------------ ------------
+    Memory Throughput           Gbyte/second       193.48
+    Mem Busy                               %        70.05
+    Max Bandwidth                          %        28.94
+    L1/TEX Hit Rate                        %         9.52
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                                0
+    L2 Hit Rate                            %        74.53
+    Mem Pipes Busy                         %        54.98
+    --------------------------- ------------ ------------
+
+    Section: Scheduler Statistics
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    One or More Eligible                   %        76.90
+    Issued Warp Per Scheduler                        0.77
+    No Eligible                            %        23.10
+    Active Warps Per Scheduler          warp         9.76
+    Eligible Warps Per Scheduler        warp         2.30
+    ---------------------------- ----------- ------------
+
+    Section: Warp State Statistics
+    ---------------------------------------- ----------- ------------
+    Metric Name                              Metric Unit Metric Value
+    ---------------------------------------- ----------- ------------
+    Warp Cycles Per Issued Instruction             cycle        12.69
+    Warp Cycles Per Executed Instruction           cycle        12.69
+    Avg. Active Threads Per Warp                                   32
+    Avg. Not Predicated Off Threads Per Warp                    29.88
+    ---------------------------------------- ----------- ------------
+
+    WRN   The optional metric smsp__pcsamp_sample_count could not be found. Collecting it as an additional metric could
+          enable the rule to provide more guidance.
